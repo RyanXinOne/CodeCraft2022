@@ -8,5 +8,11 @@ nodes = vector<node>
 class node:
     name -> str
     capacity -> unsigned
+    bandwidth -> unsighed
     accessible_clients -> unordered_set<client*>
-    allocation -> vector<unsigned> [0...]
+
+allocations = vector<vector<allocation>>
+class allocation:
+    cliend_id -> str
+    node_name -> str
+    amount -> unsigned
