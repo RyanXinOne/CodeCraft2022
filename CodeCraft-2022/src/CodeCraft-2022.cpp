@@ -1,47 +1,21 @@
 #include <iostream>
-#include <stdio.h>
-#include <string>
-#include <vector>
+#include "dataio.h"
 
 using namespace std;
 
-bool debug = true;
-
-vector<int> parseLine(string line, char delimiter = ',')
-{
-    vector<int> result;
-    int current = 0;
-    for (int i = 0; i < line.size(); i++)
-    {
-        if (line[i] == delimiter)
-        {
-            result.push_back(current);
-            current = 0;
-        }
-        else
-        {
-            current = current * 10 + (line[i] - '0');
-        }
-    }
-    result.push_back(current);
-    return result;
-}
+bool DEBUG = true;
 
 int main()
 {
-    if (debug)
-    {
-        freopen("../in.txt", "r", stdin);
-        freopen("../out.txt", "w", stdout);
-    }
+    demands demands = read_demands();
+    vector<node> nodes = read_nodes();
+    vector<vector<unsigned>> qos = read_qos();
+    unsigned qos_constraint = read_config();
 
-    string line;
-    cin >> line;
-    vector<int> numbers = parseLine(line);
-    for (int i = 0; i < numbers.size(); i++)
-    {
-        cout << numbers[i] << ' ';
-    }
+    cout << demands.ids.back().size() << endl;
+    cout << nodes.at(1).name << " " << nodes.at(1).capacity << endl;
+    cout << qos.size() << " " << qos.at(0).front() << endl;
+    cout << qos_constraint << endl;
 
     return 0;
 }

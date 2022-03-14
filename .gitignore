@@ -38,7 +38,5 @@
 
 # custom
 .vscode/
-in.txt
-out.txt
 bin/
 build/
