@@ -70,9 +70,9 @@ vector<string> parse_line_to_string(string &line, char delimiter = ',')
     return result;
 }
 
-node parse_line_to_node(string &line, char delimiter = ',')
+rawNode parse_line_to_node(string &line, char delimiter = ',')
 {
-    node result;
+    rawNode result;
     bool is_first_col = true;
     result.name = "";
     result.capacity = 0;
@@ -101,31 +101,31 @@ node parse_line_to_node(string &line, char delimiter = ',')
     return result;
 }
 
-demands read_demands()
+rawDemands read_demands()
 {
     ifstream fstream;
     string line;
-    demands demands;
+    rawDemands rawDemands;
     string filePath = DEBUG ? ".." : "";
     filePath += "/data/demand.csv";
 
     fstream.open(filePath);
     getline(fstream, line);
-    demands.ids = parse_line_to_string(line);
+    rawDemands.ids = parse_line_to_string(line);
     while (getline(fstream, line))
     {
-        demands.data.push_back(parse_line_to_int(line));
+        rawDemands.data.push_back(parse_line_to_int(line));
     }
     fstream.close();
 
-    return demands;
+    return rawDemands;
 }
 
-vector<node> read_nodes()
+vector<rawNode> read_nodes()
 {
     ifstream fstream;
     string line;
-    vector<node> node;
+    vector<rawNode> rawNode;
     string filePath = DEBUG ? ".." : "";
     filePath += "/data/site_bandwidth.csv";
 
@@ -133,11 +133,11 @@ vector<node> read_nodes()
     getline(fstream, line);
     while (getline(fstream, line))
     {
-        node.push_back(parse_line_to_node(line));
+        rawNode.push_back(parse_line_to_node(line));
     }
     fstream.close();
 
-    return node;
+    return rawNode;
 }
 
 vector<vector<unsigned>> read_qos()

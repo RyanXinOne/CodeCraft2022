@@ -7,18 +7,17 @@ typedef struct
 {
     vector<string> ids;
     vector<vector<unsigned>> data;
-} demands;
+} rawDemands;
 
 typedef struct
 {
     string name;
     unsigned capacity;
-} node;
+} rawNode;
 
+rawDemands read_demands();
 
-demands read_demands();
-
-vector<node> read_nodes();
+vector<rawNode> read_nodes();
 
 vector<vector<unsigned>> read_qos();
 
