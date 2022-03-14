@@ -2,7 +2,7 @@
 
 SCRIPT=$(readlink -f "$0")
 BASEDIR=$(dirname "$SCRIPT")
-cd $BASEDIR
+cd "$BASEDIR"
 if [ ! -d CodeCraft-2022 ]
 then
     echo "ERROR: can not find $BASEDIR/CodeCraft-2022 directory."

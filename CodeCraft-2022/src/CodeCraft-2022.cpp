@@ -31,8 +31,8 @@ int main()
 {
     if (debug)
     {
-        freopen("in.txt", "r", stdin);
-        freopen("out.txt", "w", stdout);
+        freopen("../in.txt", "r", stdin);
+        freopen("../out.txt", "w", stdout);
     }
 
     string line;
