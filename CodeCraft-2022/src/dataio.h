@@ -3,6 +3,9 @@
 
 using namespace std;
 
+#ifndef _DATAIO_H
+#define _DATAIO_H
+
 typedef struct
 {
     vector<string> ids;
@@ -19,6 +22,8 @@ rawDemands read_demands();
 
 vector<rawNode> read_nodes();
 
-vector<vector<unsigned>> read_qos();
+vector<vector<unsigned>> read_qoses();
 
 unsigned read_config();
+
+#endif

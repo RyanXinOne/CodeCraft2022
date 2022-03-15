@@ -140,7 +140,7 @@ vector<rawNode> read_nodes()
     return rawNode;
 }
 
-vector<vector<unsigned>> read_qos()
+vector<vector<unsigned>> read_qoses()
 {
     ifstream fstream;
     string line;
