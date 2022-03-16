@@ -49,8 +49,8 @@ void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
             if (raw_qoses.qoses[nodeI][clientI] < QOS)
             {
                 string client_name = raw_qoses.client_names[clientI];
-                client_map[client_name].accessible_nodes.insert(node_map[node_name].id);
-                node_map[node_name].accessible_clients.insert(client_map[client_name].id);
+                client_map[client_name].accessible_nodes.push_back(node_map[node_name].id);
+                node_map[node_name].accessible_clients.push_back(client_map[client_name].id);
             }
         }
     }

@@ -3,7 +3,7 @@ class client:
     id -> int
     name -> str
     demands -> vector<unsigned>
-    accessible_nodes -> unordered_set<int> (node id)
+    accessible_nodes -> vector<int> (node id)
 
 nodes = vector<node>
 class node:
@@ -11,7 +11,7 @@ class node:
     name -> str
     capacity -> unsigned
     bandwidth -> unsighed
-    accessible_clients -> unordered_set<int> (client id)
+    accessible_clients -> vector<int> (client id)
 
 allocations = vector<vector<allocation>>
 class allocation:

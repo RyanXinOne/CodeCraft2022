@@ -24,9 +24,9 @@ int main()
                 cout << clients[i].demands[j] << " ";
             }
             cout << endl;
-            for (unordered_set<int>::iterator it = clients[i].accessible_nodes.begin(); it != clients[i].accessible_nodes.end(); it++)
+            for (size_t j = 0; j < clients[i].accessible_nodes.size(); j++)
             {
-                cout << nodes[*it].name << " ";
+                cout << nodes[clients[i].accessible_nodes[j]].name << " ";
             }
             cout << endl;
         }
@@ -34,6 +34,11 @@ int main()
         for (size_t i = 0; i < 2; i++)
         {
             cout << nodes[i].id << " " << nodes[i].name << ": " << nodes[i].capacity << endl;
+            for (size_t j = 0; j < nodes[i].accessible_clients.size(); j++)
+            {
+                cout << clients[nodes[i].accessible_clients[j]].name << " ";
+            }
+            cout << endl;
         }
     }
 

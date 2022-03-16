@@ -1,6 +1,5 @@
 #include <string>
 #include <vector>
-#include <unordered_set>
 
 using namespace std;
 
@@ -12,7 +11,7 @@ typedef struct
     int id;
     string name;
     vector<unsigned> demands;
-    unordered_set<int> accessible_nodes;
+    vector<int> accessible_nodes;
 } client;
 
 typedef struct
@@ -21,7 +20,7 @@ typedef struct
     string name;
     unsigned capacity;
     unsigned bandwidth;
-    unordered_set<int> accessible_clients;
+    vector<int> accessible_clients;
 } node;
 
 typedef struct
