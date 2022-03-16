@@ -16,7 +16,8 @@ void build_ds(vector<client> &clients, vector<node> &nodes)
     for (size_t i = 0; i < raw_qoses[0].size(); i++)
     {
         client client;
-        client.id = raw_demands.ids[i];
+        client.id = i;
+        client.name = raw_demands.ids[i];
         for (size_t j = 0; j < raw_demands.ids.size(); j++)
         {
             client.demands.push_back(raw_demands.data[j][i]);
@@ -27,6 +28,7 @@ void build_ds(vector<client> &clients, vector<node> &nodes)
     for (size_t i = 0; i < raw_qoses.size(); i++)
     {
         node node;
+        node.id = i;
         node.name = raw_nodes[i].name;
         node.capacity = raw_nodes[i].capacity;
         node.bandwidth = 0;

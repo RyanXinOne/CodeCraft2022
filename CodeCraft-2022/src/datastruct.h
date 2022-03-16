@@ -9,13 +9,15 @@ using namespace std;
 
 struct client_tag
 {
-    string id;
+    int id;
+    string name;
     vector<unsigned> demands;
     unordered_set<struct node_tag *> accessible_nodes;
 };
 
 struct node_tag
 {
+    int id;
     string name;
     unsigned capacity;
     unsigned bandwidth;
@@ -24,7 +26,7 @@ struct node_tag
 
 typedef struct
 {
-    string client_id;
+    string client_name;
     string node_name;
     unsigned amount;
 } allocation;
