@@ -1,3 +1,4 @@
+#include <unordered_map>
 #include "datastruct.h"
 #include "dataio.h"
 
@@ -6,44 +7,63 @@ using namespace std;
 /**
  * @brief Builds the data structures from raw data.
  */
-void build_ds(vector<client> &clients, vector<node> &nodes)
+void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
 {
-    rawDemands raw_demands = read_demands();
+    rawClients raw_clients = read_clients();
     vector<rawNode> raw_nodes = read_nodes();
-    vector<vector<unsigned>> raw_qoses = read_qoses();
+    rawQoses raw_qoses = read_qoses();
     unsigned QOS = read_config();
 
-    for (size_t i = 0; i < raw_qoses[0].size(); i++)
+    // stores mapping from name to client/node
+    unordered_map<string, client> client_map;
+    unordered_map<string, node> node_map;
+
+    for (size_t i = 0; i < raw_clients.names.size(); i++)
     {
         client client;
         client.id = i;
-        client.name = raw_demands.ids[i];
-        for (size_t j = 0; j < raw_demands.ids.size(); j++)
+        client.name = raw_clients.names[i];
+        for (size_t j = 0; j < raw_clients.names.size(); j++)
         {
-            client.demands.push_back(raw_demands.data[j][i]);
+            client.demands.push_back(raw_clients.demands[j][i]);
         }
-        clients.push_back(client);
+        client_map.insert(make_pair(client.name, client));
     }
 
-    for (size_t i = 0; i < raw_qoses.size(); i++)
+    for (size_t i = 0; i < raw_nodes.size(); i++)
     {
         node node;
         node.id = i;
         node.name = raw_nodes[i].name;
         node.capacity = raw_nodes[i].capacity;
         node.bandwidth = 0;
-        nodes.push_back(node);
+        node_map.insert(make_pair(node.name, node));
     }
 
-    for (size_t nodeI = 0; nodeI < raw_qoses.size(); nodeI++)
+    // update accessible_clients/accessible_nodes
+    for (size_t nodeI = 0; nodeI < raw_nodes.size(); nodeI++)
     {
-        for (size_t clientI = 0; clientI < raw_qoses[0].size(); clientI++)
+        string node_name = raw_qoses.node_names[nodeI];
+        for (size_t clientI = 0; clientI < raw_clients.names.size(); clientI++)
         {
-            if (raw_qoses[nodeI][clientI] < QOS)
+            if (raw_qoses.qoses[nodeI][clientI] < QOS)
             {
-                clients[clientI].accessible_nodes.insert(&nodes[nodeI]);
-                nodes[nodeI].accessible_clients.insert(&clients[clientI]);
+                string client_name = raw_qoses.client_names[clientI];
+                client_map[client_name].accessible_nodes.insert(node_map[node_name].id);
+                node_map[node_name].accessible_clients.insert(client_map[client_name].id);
             }
         }
+    }
+
+    // set return values
+    ret_clients = vector<client>(client_map.size());
+    for (unordered_map<string, client>::iterator it = client_map.begin(); it != client_map.end(); it++)
+    {
+        ret_clients[it->second.id] = it->second;
+    }
+    ret_nodes = vector<node>(node_map.size());
+    for (unordered_map<string, node>::iterator it = node_map.begin(); it != node_map.end(); it++)
+    {
+        ret_nodes[it->second.id] = it->second;
     }
 }

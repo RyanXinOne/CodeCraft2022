@@ -8,9 +8,9 @@ using namespace std;
 
 typedef struct
 {
-    vector<string> ids;
-    vector<vector<unsigned>> data;
-} rawDemands;
+    vector<string> names;
+    vector<vector<unsigned>> demands;
+} rawClients;
 
 typedef struct
 {
@@ -18,11 +18,18 @@ typedef struct
     unsigned capacity;
 } rawNode;
 
-rawDemands read_demands();
+typedef struct
+{
+    vector<string> client_names;
+    vector<string> node_names;
+    vector<vector<unsigned>> qoses;
+} rawQoses;
+
+rawClients read_clients();
 
 vector<rawNode> read_nodes();
 
-vector<vector<unsigned>> read_qoses();
+rawQoses read_qoses();
 
 unsigned read_config();
 

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-vector<unsigned> parse_line_to_int(string &line, char delimiter = ',')
+vector<unsigned> parse_line_to_int(string &line)
 {
     vector<unsigned> result;
     unsigned current = 0;
@@ -17,13 +17,13 @@ vector<unsigned> parse_line_to_int(string &line, char delimiter = ',')
         }
         if (is_first_col)
         {
-            if (line[i] == delimiter)
+            if (line[i] == ',')
             {
                 is_first_col = false;
             }
             continue;
         }
-        if (line[i] == delimiter)
+        if (line[i] == ',')
         {
             result.push_back(current);
             current = 0;
@@ -37,7 +37,7 @@ vector<unsigned> parse_line_to_int(string &line, char delimiter = ',')
     return result;
 }
 
-vector<string> parse_line_to_string(string &line, char delimiter = ',')
+vector<string> parse_line_to_string(string &line)
 {
     vector<string> result;
     string current = "";
@@ -50,13 +50,13 @@ vector<string> parse_line_to_string(string &line, char delimiter = ',')
         }
         if (is_first_col)
         {
-            if (line[i] == delimiter)
+            if (line[i] == ',')
             {
                 is_first_col = false;
             }
             continue;
         }
-        if (line[i] == delimiter)
+        if (line[i] == ',')
         {
             result.push_back(current);
             current = "";
@@ -70,62 +70,45 @@ vector<string> parse_line_to_string(string &line, char delimiter = ',')
     return result;
 }
 
-rawNode parse_line_to_node(string &line, char delimiter = ',')
+string parse_line_get_first_col(string &line)
 {
-    rawNode result;
-    bool is_first_col = true;
-    result.name = "";
-    result.capacity = 0;
+    string result = "";
     for (size_t i = 0; i < line.size(); i++)
     {
-        if (line[i] == '\r')
+        if (line[i] == '\r' || line[i] == ',')
         {
             break;
         }
-        if (is_first_col)
-        {
-            if (line[i] == delimiter)
-            {
-                is_first_col = false;
-            }
-            else
-            {
-                result.name += line[i];
-            }
-        }
-        else
-        {
-            result.capacity = result.capacity * 10 + (line[i] - '0');
-        }
+        result += line[i];
     }
     return result;
 }
 
-rawDemands read_demands()
+rawClients read_clients()
 {
     ifstream fstream;
     string line;
-    rawDemands rawDemands;
+    rawClients raw_clients;
     string filePath = DEBUG ? ".." : "";
     filePath += "/data/demand.csv";
 
     fstream.open(filePath);
     getline(fstream, line);
-    rawDemands.ids = parse_line_to_string(line);
+    raw_clients.names = parse_line_to_string(line);
     while (getline(fstream, line))
     {
-        rawDemands.data.push_back(parse_line_to_int(line));
+        raw_clients.demands.push_back(parse_line_to_int(line));
     }
     fstream.close();
 
-    return rawDemands;
+    return raw_clients;
 }
 
 vector<rawNode> read_nodes()
 {
     ifstream fstream;
     string line;
-    vector<rawNode> rawNode;
+    vector<rawNode> raw_nodes;
     string filePath = DEBUG ? ".." : "";
     filePath += "/data/site_bandwidth.csv";
 
@@ -133,30 +116,35 @@ vector<rawNode> read_nodes()
     getline(fstream, line);
     while (getline(fstream, line))
     {
-        rawNode.push_back(parse_line_to_node(line));
+        rawNode raw_node;
+        raw_node.name = parse_line_get_first_col(line);
+        raw_node.capacity = parse_line_to_int(line)[0];
+        raw_nodes.push_back(raw_node);
     }
     fstream.close();
 
-    return rawNode;
+    return raw_nodes;
 }
 
-vector<vector<unsigned>> read_qoses()
+rawQoses read_qoses()
 {
     ifstream fstream;
     string line;
-    vector<vector<unsigned>> qos;
+    rawQoses raw_qoses;
     string filePath = DEBUG ? ".." : "";
     filePath += "/data/qos.csv";
 
     fstream.open(filePath);
     getline(fstream, line);
+    raw_qoses.client_names = parse_line_to_string(line);
     while (getline(fstream, line))
     {
-        qos.push_back(parse_line_to_int(line));
+        raw_qoses.node_names.push_back(parse_line_get_first_col(line));
+        raw_qoses.qoses.push_back(parse_line_to_int(line));
     }
     fstream.close();
 
-    return qos;
+    return raw_qoses;
 }
 
 unsigned read_config()

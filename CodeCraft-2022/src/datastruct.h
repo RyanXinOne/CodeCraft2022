@@ -7,22 +7,22 @@ using namespace std;
 #ifndef _DATASTRUCT_H
 #define _DATASTRUCT_H
 
-struct client_tag
+typedef struct
 {
     int id;
     string name;
     vector<unsigned> demands;
-    unordered_set<struct node_tag *> accessible_nodes;
-};
+    unordered_set<int> accessible_nodes;
+} client;
 
-struct node_tag
+typedef struct
 {
     int id;
     string name;
     unsigned capacity;
     unsigned bandwidth;
-    unordered_set<struct client_tag *> accessible_clients;
-};
+    unordered_set<int> accessible_clients;
+} node;
 
 typedef struct
 {
@@ -31,9 +31,6 @@ typedef struct
     unsigned amount;
 } allocation;
 
-typedef struct client_tag client;
-typedef struct node_tag node;
-
-void build_ds(vector<client> &clients, vector<node> &nodes);
+void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes);
 
 #endif
