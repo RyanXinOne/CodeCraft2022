@@ -5,6 +5,18 @@ using namespace std;
 
 bool DEBUG = true;
 
+// at time step t, allocate demands to input node as many as possible
+// remember to update clients.demands[t], clients.allocations[t], and nodes.allocated[t]
+void allocate_demands_to_node(int t, node &node)
+{
+
+}
+
+void schedule_traffic(vector<client> &clients, vector<node> &nodes)
+{
+
+}
+
 int main()
 {
     vector<client> clients;
@@ -13,7 +25,7 @@ int main()
 
     build_ds(clients, nodes);
 
-
+    schedule_traffic(clients, nodes);
 
     return 0;
 }
