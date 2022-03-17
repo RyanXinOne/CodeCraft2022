@@ -1,4 +1,3 @@
-#include <unordered_map>
 #include "datastruct.h"
 #include "dataio.h"
 
@@ -23,7 +22,7 @@ void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
         client client;
         client.id = i;
         client.name = raw_clients.names[i];
-        for (size_t j = 0; j < raw_clients.names.size(); j++)
+        for (size_t j = 0; j < raw_clients.demands.size(); j++)
         {
             client.demands.push_back(raw_clients.demands[j][i]);
         }
@@ -36,7 +35,7 @@ void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
         node.id = i;
         node.name = raw_nodes[i].name;
         node.capacity = raw_nodes[i].capacity;
-        node.bandwidth = 0;
+        node.allocated = vector<unsigned>(raw_clients.demands.size());
         node_map.insert(make_pair(node.name, node));
     }
 

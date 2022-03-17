@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -11,7 +12,8 @@ typedef struct
     int id;
     string name;
     vector<unsigned> demands;
-    vector<int> accessible_nodes;
+    vector<unordered_map<int, unsigned>> allocations;  // <node_id, amount>
+    vector<int> accessible_nodes;  // <node_id>
 } client;
 
 typedef struct
@@ -19,16 +21,9 @@ typedef struct
     int id;
     string name;
     unsigned capacity;
-    unsigned bandwidth;
-    vector<int> accessible_clients;
+    vector<unsigned> allocated;
+    vector<int> accessible_clients;  // <client_id>
 } node;
-
-typedef struct
-{
-    string client_name;
-    string node_name;
-    unsigned amount;
-} allocation;
 
 void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes);
 

@@ -1,20 +1,19 @@
-clients = vector<clients>
-class client:
-    id -> int
-    name -> str
-    demands -> vector<unsigned>
-    accessible_nodes -> vector<int> (node id)
+定义：95%距离 X = X与前95%的值的差值的和
 
-nodes = vector<node>
-class node:
-    id -> int
-    name -> str
-    capacity -> unsigned
-    bandwidth -> unsighed
-    accessible_clients -> vector<int> (client id)
+对每个节点，尽量在每个时刻最大限度分配带宽 => 95%距离最小化
 
-allocations = vector<vector<allocation>>
-class allocation:
-    cliend_name -> str
-    node_name -> str
-    amount -> unsigned
+do
+    遍历边缘节点
+        对每一个节点，计算每个时刻可分配至该节点的最大带宽，得出95%距离
+    取95%距离最小的边缘节点，分配带宽
+重复以上操作，直到完成所有边缘节点的分配
+
+分配带宽(客户请求列表，最大可分配带宽):
+    if 请求总量 <= 最大可分配：
+        直接分配
+    else:
+        优先处理可连接节点数量最少（或可连接节点的带宽总量最小）的客户的请求
+
+仍需验证是否已分配所有所有客户的所有请求
+
+后续优化：尝试降低最大限度分配节点的95%值，迁移至利用率低的节点中，进一步降低其95%距离
