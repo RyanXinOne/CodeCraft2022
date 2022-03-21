@@ -24,6 +24,7 @@ void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
         client.name = raw_clients.names[i];
         for (size_t j = 0; j < raw_clients.demands.size(); j++)
         {
+            client.allocations.push_back(unordered_map<int, unsigned>());
             client.demands.push_back(raw_clients.demands[j][i]);
         }
         client_map.insert(make_pair(client.name, client));
