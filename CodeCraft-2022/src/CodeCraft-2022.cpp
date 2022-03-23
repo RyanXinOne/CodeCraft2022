@@ -1,8 +1,9 @@
-#include <iostream>
 #include "datastruct.h"
+#include "dataio.h"
+#include <iostream>
 #include <algorithm>
-#include <unordered_set>
 #include <cmath>
+#include <unordered_set>
 
 using namespace std;
 
@@ -51,12 +52,18 @@ void allocate_demands_to_node(int node_id, size_t t, vector<client> &clients, ve
 
         clients[client_id].demands[t] -= allo_amount;
         // check and initialise allocation
-        unordered_map<int, unsigned> &allocation = clients[client_id].allocations[t];
-        if (allocation.find(node_id) == allocation.end())
+        unordered_map<int, unsigned> &client_allocation = clients[client_id].allocations[t];
+        if (client_allocation.find(node_id) == client_allocation.end())
         {
-            allocation[node_id] = 0;
+            client_allocation[node_id] = 0;
         }
-        allocation[node_id] += allo_amount;
+        client_allocation[node_id] += allo_amount;
+        unordered_map<int, unsigned> &node_allocation = node.allocations[t];
+        if (node_allocation.find(client_id) == node_allocation.end())
+        {
+            node_allocation[client_id] = 0;
+        }
+        node_allocation[client_id] += allo_amount;
         node.allocated[t] += allo_amount;
 
         // if running out of capacity
@@ -153,6 +160,8 @@ int main()
     build_ds(clients, nodes);
 
     schedule_traffic(clients, nodes);
+
+    write_allocations(clients, nodes);
 
     return 0;
 }

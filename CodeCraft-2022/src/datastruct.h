@@ -21,6 +21,7 @@ typedef struct
     int id;
     string name;
     unsigned capacity;
+    vector<unordered_map<int, unsigned>> allocations;  // <client_id, amount>
     vector<unsigned> allocated;
     vector<int> accessible_clients;  // <client_id>
 } node;

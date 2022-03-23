@@ -36,6 +36,10 @@ void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
         node.id = i;
         node.name = raw_nodes[i].name;
         node.capacity = raw_nodes[i].capacity;
+        for (size_t j = 0; j < raw_clients.demands.size(); j++)
+        {
+            node.allocations.push_back(unordered_map<int, unsigned>());
+        }
         node.allocated = vector<unsigned>(raw_clients.demands.size());
         node_map.insert(make_pair(node.name, node));
     }

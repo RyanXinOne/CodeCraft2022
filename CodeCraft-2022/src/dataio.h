@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include "datastruct.h"
 
 using namespace std;
 
@@ -32,5 +33,7 @@ vector<rawNode> read_nodes();
 rawQoses read_qoses();
 
 unsigned read_config();
+
+void write_allocations(vector<client> &clients, vector<node> &nodes);
 
 #endif

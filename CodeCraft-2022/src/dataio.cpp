@@ -1,6 +1,6 @@
-#include <fstream>
 #include "dataio.h"
 #include "CodeCradt-2022.h"
+#include <fstream>
 
 using namespace std;
 
@@ -160,4 +160,11 @@ unsigned read_config()
     fstream.close();
 
     return stoi(line.substr(line.find('=') + 1));
+}
+
+void write_allocations(vector<client> &clients, vector<node> &nodes)
+{
+    ofstream fstream;
+    string filePath = DEBUG ? ".." : "";
+    filePath += "/output/solution.txt";
 }
