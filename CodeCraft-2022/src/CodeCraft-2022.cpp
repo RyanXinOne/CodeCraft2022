@@ -4,10 +4,11 @@
 #include <algorithm>
 #include <cmath>
 #include <unordered_set>
+#include <fstream>
 
 using namespace std;
 
-bool DEBUG = true;
+bool DEBUG = false;
 
 // Calculate given a client and time t, sum of the accessible nodes capacity left (sum of available capacity)
 int client_priority(client &client, size_t t, vector<node> &nodes)
@@ -146,6 +147,7 @@ void schedule_traffic(vector<client> &clients, vector<node> &nodes)
                 {
                     cout << "Demand not completed for client " << client.id << " for time " << t << endl;
                 }
+                throw runtime_error("Demand not completed");
             }
         }
     }
@@ -162,6 +164,21 @@ int main()
     schedule_traffic(clients, nodes);
 
     write_allocations(clients, nodes);
+
+    ifstream fstream;
+    string filePath = DEBUG ? ".." : "";
+    filePath += "/output/solution.txt";
+    fstream.open(filePath, ios::out);
+    size_t count = 0;
+    string line;
+    while (getline(fstream, line))
+    {
+        count++;
+    }
+    if (count != clients[0].demands.size() * clients.size())
+    {
+        throw runtime_error("Output file size is not correct");
+    }
 
     return 0;
 }

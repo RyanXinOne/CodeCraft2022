@@ -2,8 +2,6 @@
 #include "CodeCradt-2022.h"
 #include <fstream>
 
-#include <iostream>
-
 using namespace std;
 
 vector<unsigned> parse_line_to_int(string &line)
