@@ -9,7 +9,7 @@
 
 using namespace std;
 
-bool DEBUG = false;
+bool DEBUG = true;
 
 // Calculate given a client and time t, sum of the accessible nodes capacity left (sum of available capacity)
 int client_priority(client &client, size_t t, vector<node> &nodes)
@@ -53,19 +53,8 @@ void allocate_demands_to_node(int node_id, size_t t, vector<client> &clients, ve
         unsigned allo_amount = min(node.capacity - node.allocated[t], clients[client_id].demands[t]);
 
         clients[client_id].demands[t] -= allo_amount;
-        // check and initialise allocation
-        unordered_map<int, unsigned> &client_allocation = clients[client_id].allocations[t];
-        if (client_allocation.find(node_id) == client_allocation.end())
-        {
-            client_allocation[node_id] = 0;
-        }
-        client_allocation[node_id] += allo_amount;
-        unordered_map<int, unsigned> &node_allocation = node.allocations[t];
-        if (node_allocation.find(client_id) == node_allocation.end())
-        {
-            node_allocation[client_id] = 0;
-        }
-        node_allocation[client_id] += allo_amount;
+        clients[client_id].allocations[t][node_id] = allo_amount;
+        node.allocations[t][client_id] = allo_amount;
         node.allocated[t] += allo_amount;
 
         // if running out of capacity
@@ -154,24 +143,24 @@ void schedule_traffic(vector<client> &clients, vector<node> &nodes)
     }
 }
 
-// Choose node to be reduced
-int select_reduce (vector<node> &nodes)
-{
-    return rand() % nodes.size();
-}
+// // Choose node to be reduced
+// int select_reduce (vector<node> &nodes)
+// {
+//     return rand() % static_cast<int>(nodes.size());
+// }
 
-// Choose node to be reduced
-int select_increase (vector<node> &nodes)
-{
-    return rand() % nodes.size();
-}
+// // Choose node to be reduced
+// int select_increase (vector<node> &nodes)
+// {
+//     return rand() % static_cast<int>(nodes.size());
+// }
 
-// Optimize by random node's 95 distance (changing allocations where node before receives less demand; node after receives more demand)
-void optimize(vector<client> &clients, vector<node> &nodes) {
-    int reduce_node_i = select_reduce(nodes);
-    int increase_node_i = select_increase(nodes);
+// // Optimize by random node's 95 distance (changing allocations where node before receives less demand; node after receives more demand)
+// void optimize(vector<client> &clients, vector<node> &nodes) {
+//     int reduce_node_i = select_reduce(nodes);
+//     int increase_node_i = select_increase(nodes);
     
-}
+// }
 
 int main()
 {
