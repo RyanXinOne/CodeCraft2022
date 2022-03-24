@@ -2,6 +2,8 @@
 #include "CodeCradt-2022.h"
 #include <fstream>
 
+#include <iostream>
+
 using namespace std;
 
 vector<unsigned> parse_line_to_int(string &line)
@@ -167,4 +169,28 @@ void write_allocations(vector<client> &clients, vector<node> &nodes)
     ofstream fstream;
     string filePath = DEBUG ? ".." : "";
     filePath += "/output/solution.txt";
+    fstream.open(filePath, ios::out);
+
+    for (size_t t = 0; t < clients[0].demands.size(); t++)
+    {
+        for (size_t i = 0; i < clients.size(); i++)
+        {
+            fstream << clients[i].name << ":";
+            size_t count = 0;
+            for (unordered_map<int, unsigned>::iterator it = clients[i].allocations[t].begin(); it != clients[i].allocations[t].end(); it++)
+            {
+                fstream << "<" << nodes[it->first].name << "," << it->second << ">";
+            }
+            if (count++ < clients[i].allocations[t].size() - 1)
+            {
+                fstream << ",";
+            }
+            if (t < clients[i].demands.size() - 1 || i < clients.size() - 1)
+            {
+                fstream << endl;
+            }
+        }
+    }
+
+    fstream.close();
 }

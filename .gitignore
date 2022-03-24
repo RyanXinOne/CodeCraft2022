@@ -40,3 +40,4 @@
 .vscode/
 bin/
 build/
+output/
