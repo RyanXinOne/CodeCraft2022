@@ -178,10 +178,10 @@ void write_allocations(vector<client> &clients, vector<node> &nodes)
             for (unordered_map<int, unsigned>::iterator it = clients[i].allocations[t].begin(); it != clients[i].allocations[t].end(); it++)
             {
                 fstream << "<" << nodes[it->first].name << "," << it->second << ">";
-            }
-            if (count++ < clients[i].allocations[t].size() - 1)
-            {
-                fstream << ",";
+                if (count++ < clients[i].allocations[t].size() - 1)
+                {
+                    fstream << ",";
+                }
             }
             if (t < clients[i].demands.size() - 1 || i < clients.size() - 1)
             {
