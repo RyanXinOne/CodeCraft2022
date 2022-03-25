@@ -13,13 +13,17 @@ void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
 
     // stores mapping from name to client/node
     unordered_map<string, client> client_map;
+    client_map.reserve(raw_clients.names.size());
     unordered_map<string, node> node_map;
+    node_map.reserve(raw_nodes.size());
 
     for (size_t i = 0; i < raw_clients.names.size(); i++)
     {
         client client;
         client.id = i;
         client.name = raw_clients.names[i];
+        client.allocations.reserve(raw_clients.demands.size());
+        client.demands.reserve(raw_clients.demands.size());
         for (size_t j = 0; j < raw_clients.demands.size(); j++)
         {
             client.allocations.push_back(unordered_map<int, unsigned>());
@@ -34,6 +38,7 @@ void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
         node.id = i;
         node.name = raw_nodes[i].name;
         node.capacity = raw_nodes[i].capacity;
+        node.allocations.reserve(raw_clients.demands.size());
         for (size_t j = 0; j < raw_clients.demands.size(); j++)
         {
             node.allocations.push_back(unordered_map<int, unsigned>());

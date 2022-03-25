@@ -4,6 +4,7 @@
 #include "schedule.h"
 #include "optimise.h"
 #include "error.h"
+#include <vector>
 
 bool DEBUG = true;
 bool CHECKERROR = false;

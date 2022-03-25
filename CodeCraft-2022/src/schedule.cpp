@@ -17,7 +17,7 @@ int client_priority(client &client, size_t t, vector<node> &nodes)
 }
 
 // at time t, allocate demands to input node as many as possible
-// remember to update clients.demands[t], clients.allocations[t], and nodes.allocated[t]
+// would update clients.demands[t], clients.allocations[t], and nodes.allocated[t]
 void allocate_demands_to_node(int node_id, size_t t, vector<client> &clients, vector<node> &nodes)
 {
     node &node = nodes[node_id];
@@ -60,7 +60,8 @@ unsigned calc_distance_95(node &node, vector<client> &clients)
 {
     size_t total_t = clients[0].demands.size();
     size_t index_95 = ceil(total_t * 0.95) - 1;
-    vector<unsigned> max_allocations(total_t);
+    vector<unsigned> max_allocations;
+    max_allocations.reserve(total_t);
 
     for (size_t t = 0; t < total_t; t++)
     {
@@ -69,7 +70,7 @@ unsigned calc_distance_95(node &node, vector<client> &clients)
         {
             sum += clients[client_id].demands[t];
         }
-        max_allocations.push_back(min(sum, node.capacity));
+        max_allocations.push_back(min(sum + node.allocated[t], node.capacity));
     }
     nth_element(max_allocations.begin(), max_allocations.begin() + index_95, max_allocations.end());
 
@@ -87,6 +88,7 @@ unsigned calc_distance_95(node &node, vector<client> &clients)
 void schedule_traffic(vector<client> &clients, vector<node> &nodes)
 {
     unordered_set<int> remainingNodes;
+    remainingNodes.reserve(nodes.size());
     for (size_t i = 0; i < nodes.size(); i++)
     {
         remainingNodes.insert(i);
