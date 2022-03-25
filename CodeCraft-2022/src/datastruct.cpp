@@ -1,8 +1,6 @@
 #include "datastruct.h"
 #include "dataio.h"
 
-using namespace std;
-
 /**
  * @brief Builds the data structures from raw data.
  */

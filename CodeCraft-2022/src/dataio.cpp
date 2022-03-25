@@ -1,8 +1,5 @@
 #include "dataio.h"
-#include "CodeCradt-2022.h"
 #include <fstream>
-
-using namespace std;
 
 vector<unsigned> parse_line_to_int(string &line)
 {
@@ -167,7 +164,7 @@ void write_allocations(vector<client> &clients, vector<node> &nodes)
     ofstream fstream;
     string filePath = DEBUG ? ".." : "";
     filePath += "/output/solution.txt";
-    fstream.open(filePath, ios::out);
+    fstream.open(filePath);
 
     for (size_t t = 0; t < clients[0].demands.size(); t++)
     {

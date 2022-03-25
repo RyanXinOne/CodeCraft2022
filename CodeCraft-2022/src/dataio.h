@@ -1,11 +1,10 @@
+#include "CodeCraft-2022.h"
+#include "datastruct.h"
 #include <string>
 #include <vector>
-#include "datastruct.h"
 
-using namespace std;
-
-#ifndef _DATAIO_H
-#define _DATAIO_H
+#ifndef DATAIO_H
+#define DATAIO_H
 
 typedef struct
 {
