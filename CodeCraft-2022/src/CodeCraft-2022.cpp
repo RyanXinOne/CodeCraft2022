@@ -125,42 +125,28 @@ void schedule_traffic(vector<client> &clients, vector<node> &nodes)
 
         remainingNodes.erase(min_dis_95_i);
     }
-
-    // Need to check if all demand is allocated
-    for (client client : clients)
-    {
-        for (size_t t = 0; t < client.demands.size(); t++)
-        {
-            if (client.demands[t] != 0)
-            {
-                if (DEBUG)
-                {
-                    cout << "Demand not completed for client " << client.id << " for time " << t << endl;
-                }
-                throw runtime_error("Demand not completed");
-            }
-        }
-    }
 }
 
-// // Choose node to be reduced
-// int select_reduce (vector<node> &nodes)
-// {
-//     return rand() % static_cast<int>(nodes.size());
-// }
+/*
+// Choose node to be reduced
+int select_reduce (vector<node> &nodes)
+{
+    return rand() % static_cast<int>(nodes.size());
+}
 
-// // Choose node to be reduced
-// int select_increase (vector<node> &nodes)
-// {
-//     return rand() % static_cast<int>(nodes.size());
-// }
+// Choose node to be reduced
+int select_increase (vector<node> &nodes)
+{
+    return rand() % static_cast<int>(nodes.size());
+}
 
-// // Optimize by random node's 95 distance (changing allocations where node before receives less demand; node after receives more demand)
-// void optimize(vector<client> &clients, vector<node> &nodes) {
-//     int reduce_node_i = select_reduce(nodes);
-//     int increase_node_i = select_increase(nodes);
+// Optimize by random node's 95 distance (changing allocations where node before receives less demand; node after receives more demand)
+void optimize(vector<client> &clients, vector<node> &nodes) {
+    int reduce_node_i = select_reduce(nodes);
+    int increase_node_i = select_increase(nodes);
     
-// }
+}
+*/
 
 int main()
 {
@@ -169,6 +155,9 @@ int main()
     // int demands_length = clients.front().demands.size();
 
     build_ds(clients, nodes);
+
+    // copy clients
+    vector<client> clients_copy = clients;
 
     schedule_traffic(clients, nodes);
 
@@ -187,6 +176,59 @@ int main()
     if (count != clients[0].demands.size() * clients.size())
     {
         throw runtime_error("Output file size is not correct");
+    }
+
+    // Test if allocation is under accessible nodes and if all demands are allocated
+    for (client client : clients) {
+        // iterate over allocations
+        for (size_t t = 0; t < client.allocations.size(); t++) {
+            // iterate over nodes
+            for (pair<int, unsigned> allocation : client.allocations[t]) {
+                if (find(client.accessible_nodes.begin(), client.accessible_nodes.end(), allocation.first) == client.accessible_nodes.end()) {
+                    throw runtime_error("QoS is not under constraints");
+                }
+            }
+
+        }
+    }
+
+    // Need to check if all demand is allocated
+    for (client client : clients)
+    {
+        for (size_t t = 0; t < client.demands.size(); t++)
+        {
+            if (client.demands[t] != 0)
+            {
+                if (DEBUG)
+                {
+                    cout << "Demand not completed for client " << client.id << " for time " << t << endl;
+                }
+                throw runtime_error("Demand not completed");
+            }
+        }
+    }
+
+    // Test if allocation sum is equal to demands in each t
+    for (size_t t = 0; t < clients[0].demands.size(); t++) {
+
+        for (size_t i = 0; i < clients.size(); i++) {
+            unsigned sum = 0;
+            for (pair<int, unsigned> allocation : clients[i].allocations[t]) {
+                sum += allocation.second;
+            }
+            if (sum != clients_copy[i].demands[t]) {
+                throw runtime_error("Allocation sum is not equal to demands");
+            }
+        }
+    }
+
+    // Test if allocated in node bigger than capacity
+    for (node node : nodes) {
+        for (size_t t = 0; t < node.allocated.size(); t++) {
+            if (node.allocated[t] > node.capacity) {
+                throw runtime_error("Allocated in node bigger than capacity");
+            }
+        }
     }
 
     return 0;
