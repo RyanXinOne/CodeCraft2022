@@ -3,17 +3,17 @@
 #include <cmath>
 #include <unordered_set>
 
-// Calculate given a client and time t, sum of the accessible nodes capacity left (sum of available capacity)
-int client_priority(client &client, size_t t, vector<node> &nodes)
+// Calculate given a client and time t, given by sum of available capacity / demand
+double client_priority(client &client, size_t t, vector<node> &nodes)
 {
-    unsigned sum = 0;
+    unsigned aval_capacity = 0;
 
     for (int node_id : client.accessible_nodes)
     {
-        sum += nodes[node_id].capacity - nodes[node_id].allocated[t];
+        aval_capacity += nodes[node_id].capacity - nodes[node_id].allocated[t];
     }
 
-    return (int)sum;
+    return (double)aval_capacity / client.demands[t];
 }
 
 // at time t, allocate demands to input node as many as possible
@@ -23,25 +23,23 @@ void allocate_demands_to_node(int node_id, size_t t, vector<client> &clients, ve
     node &node = nodes[node_id];
 
     // prepare a pair vector for customise sorting
-    vector<vector<int>> cid_w_prio;
+    vector<pair<int, double>> cid_w_prio; // <client id, priority>
 
     for (int client_id : node.accessible_clients)
     {
         if (clients[client_id].demands[t] == 0)
             continue;
-        // store id, anlcs
-        vector<int> pair{client_id, client_priority(clients[client_id], t, nodes)};
-        cid_w_prio.push_back(pair);
+        cid_w_prio.push_back(make_pair(client_id, client_priority(clients[client_id], t, nodes)));
     }
 
     // sort accessible clients by their priorities in ASC
-    sort(cid_w_prio.begin(), cid_w_prio.end(), [](vector<int> &v1, vector<int> &v2)
-         { return v1[1] < v2[1]; });
+    sort(cid_w_prio.begin(), cid_w_prio.end(), [](pair<int, double> &v1, pair<int, double> &v2)
+         { return v1.second < v2.second; });
 
     // allocate demands
     for (size_t i = 0; i < cid_w_prio.size(); i++)
     {
-        int client_id = cid_w_prio[i][0];
+        int client_id = cid_w_prio[i].first;
         unsigned allo_amount = min(node.capacity - node.allocated[t], clients[client_id].demands[t]);
 
         clients[client_id].demands[t] -= allo_amount;
