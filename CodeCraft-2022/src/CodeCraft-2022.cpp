@@ -4,6 +4,8 @@
 #include "schedule.h"
 #include "optimise.h"
 #include "error.h"
+#include <ctime>
+#include <cstdlib>
 #include <vector>
 
 bool DEBUG = true;
@@ -11,6 +13,8 @@ bool CHECKERROR = false;
 
 int main()
 {
+    srand(time(NULL));
+
     vector<client> clients;
     vector<node> nodes;
     vector<client> clients_copy;
@@ -24,7 +28,7 @@ int main()
 
     schedule_traffic(clients, nodes);
 
-    // optimise_traffic(clients, nodes);
+    optimise_traffic(clients, nodes);
 
     write_allocations(clients, nodes);
 

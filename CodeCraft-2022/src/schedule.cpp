@@ -17,7 +17,7 @@ double client_priority(client &client, size_t t, vector<node> &nodes)
 }
 
 // at time t, allocate demands to input node as many as possible
-// would update clients.demands[t], clients.allocations[t], and nodes.allocated[t]
+// would update clients.demands[t], clients.allocations[t], nodes.allocated[t], nodes.allocations[t]
 void allocate_demands_to_node(int node_id, size_t t, vector<client> &clients, vector<node> &nodes)
 {
     node &node = nodes[node_id];
