@@ -69,7 +69,7 @@ void migrate(const allocation &from, const allocation &to, vector<client> &clien
 allocation select_from(const vector<node> &nodes)
 {
     double ALLOC_FRAC_MIN = 0.2;
-    double ALLOC_FRAC_MAX = 0.6;
+    double ALLOC_FRAC_MAX = 0.8;
 
     allocation from;
     size_t index_95 = ceil(nodes[0].allocated.size() * 0.95) - 1;
@@ -157,9 +157,11 @@ void optimise_once(vector<client> &clients, vector<node> &nodes)
 
 void optimise_traffic(vector<client> &clients, vector<node> &nodes)
 {
-    while (true)
+    // set num of iterations, can also set time limit
+    int EPOCH = 10000;
+
+    for (int i = 0; i < EPOCH; i++)
     {
         optimise_once(clients, nodes);
-        break;
     }
 }
