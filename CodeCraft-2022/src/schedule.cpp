@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 // Calculate given a client and time t, given by sum of available capacity / demand
-double client_priority(client &client, size_t t, vector<node> &nodes)
+double client_priority(const client &client, size_t t, const vector<node> &nodes)
 {
     unsigned aval_capacity = 0;
 
@@ -54,7 +54,7 @@ void allocate_demands_to_node(int node_id, size_t t, vector<client> &clients, ve
 }
 
 // Compute distance 95
-unsigned calc_distance_95(node &node, vector<client> &clients)
+unsigned calc_distance_95(const node &node, const vector<client> &clients)
 {
     size_t total_t = clients[0].demands.size();
     size_t index_95 = ceil(total_t * 0.95) - 1;

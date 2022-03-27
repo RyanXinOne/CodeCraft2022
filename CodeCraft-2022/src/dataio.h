@@ -33,6 +33,6 @@ rawQoses read_qoses();
 
 unsigned read_config();
 
-void write_allocations(vector<client> &clients, vector<node> &nodes);
+void write_allocations(const vector<client> &clients, const vector<node> &nodes);
 
 #endif

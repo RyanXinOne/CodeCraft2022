@@ -6,10 +6,10 @@
  */
 void build_ds(vector<client> &ret_clients, vector<node> &ret_nodes)
 {
-    rawClients raw_clients = read_clients();
-    vector<rawNode> raw_nodes = read_nodes();
-    rawQoses raw_qoses = read_qoses();
-    unsigned QOS = read_config();
+    const rawClients raw_clients = read_clients();
+    const vector<rawNode> raw_nodes = read_nodes();
+    const rawQoses raw_qoses = read_qoses();
+    const unsigned QOS = read_config();
 
     // stores mapping from name to client/node
     unordered_map<string, client> client_map;

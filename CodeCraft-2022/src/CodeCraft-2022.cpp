@@ -9,7 +9,7 @@
 #include <vector>
 
 bool DEBUG = true;
-bool CHECKERROR = false;
+bool CHECKERROR = true;
 
 int main()
 {
@@ -30,12 +30,12 @@ int main()
 
     optimise_traffic(clients, nodes);
 
-    write_allocations(clients, nodes);
-
     if (CHECKERROR)
     {
         detect_errors(clients, clients_copy, nodes);
     }
+
+    write_allocations(clients, nodes);
 
     return 0;
 }

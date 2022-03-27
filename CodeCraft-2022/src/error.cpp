@@ -3,7 +3,7 @@
 #include <string>
 #include <algorithm>
 
-void detect_errors(vector<client> &clients, vector<client> &clients_copy, vector<node> &nodes)
+void detect_errors(const vector<client> &clients, const vector<client> &clients_copy, const vector<node> &nodes)
 {
     ifstream fstream;
     string filePath = DEBUG ? ".." : "";

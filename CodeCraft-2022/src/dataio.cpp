@@ -1,7 +1,7 @@
 #include "dataio.h"
 #include <fstream>
 
-vector<unsigned> parse_line_to_int(string &line)
+vector<unsigned> parse_line_to_int(const string &line)
 {
     vector<unsigned> result;
     unsigned current = 0;
@@ -34,7 +34,7 @@ vector<unsigned> parse_line_to_int(string &line)
     return result;
 }
 
-vector<string> parse_line_to_string(string &line)
+vector<string> parse_line_to_string(const string &line)
 {
     vector<string> result;
     string current = "";
@@ -67,7 +67,7 @@ vector<string> parse_line_to_string(string &line)
     return result;
 }
 
-string parse_line_get_first_col(string &line)
+string parse_line_get_first_col(const string &line)
 {
     string result = "";
     for (size_t i = 0; i < line.size(); i++)
@@ -159,7 +159,7 @@ unsigned read_config()
     return stoi(line.substr(line.find('=') + 1));
 }
 
-void write_allocations(vector<client> &clients, vector<node> &nodes)
+void write_allocations(const vector<client> &clients, const vector<node> &nodes)
 {
     ofstream fstream;
     string filePath = DEBUG ? ".." : "";
@@ -172,7 +172,7 @@ void write_allocations(vector<client> &clients, vector<node> &nodes)
         {
             fstream << clients[i].name << ":";
             size_t count = 0;
-            for (unordered_map<int, unsigned>::iterator it = clients[i].allocations[t].begin(); it != clients[i].allocations[t].end(); it++)
+            for (unordered_map<int, unsigned>::const_iterator it = clients[i].allocations[t].begin(); it != clients[i].allocations[t].end(); it++)
             {
                 fstream << "<" << nodes[it->first].name << "," << it->second << ">";
                 if (count++ < clients[i].allocations[t].size() - 1)
