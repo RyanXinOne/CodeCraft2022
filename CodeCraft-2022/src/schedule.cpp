@@ -56,8 +56,8 @@ void allocate_demands_to_node(int node_id, size_t t, vector<client> &clients, ve
 // Compute distance 95
 unsigned calc_distance_95(const node &node, const vector<client> &clients)
 {
-    size_t total_t = clients[0].demands.size();
-    size_t index_95 = ceil(total_t * 0.95) - 1;
+    static size_t total_t = clients[0].demands.size();
+    static size_t index_95 = ceil(total_t * 0.95) - 1;
     vector<unsigned> max_allocations;
     max_allocations.reserve(total_t);
 

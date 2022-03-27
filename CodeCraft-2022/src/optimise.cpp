@@ -16,7 +16,7 @@ typedef struct
 
 unsigned calc_bandwidth_95_inplace(vector<unsigned> &allocated)
 {
-    size_t index_95 = ceil(allocated.size() * 0.95) - 1;
+    static size_t index_95 = ceil(allocated.size() * 0.95) - 1;
     nth_element(allocated.begin(), allocated.begin() + index_95, allocated.end());
     return allocated[index_95];
 }
@@ -71,8 +71,8 @@ allocation select_from(const vector<node> &nodes)
     double ALLOC_FRAC_MIN = 0.2;
     double ALLOC_FRAC_MAX = 0.8;
 
+    static size_t index_95 = ceil(nodes[0].allocated.size() * 0.95) - 1;
     allocation from;
-    size_t index_95 = ceil(nodes[0].allocated.size() * 0.95) - 1;
     vector<pair<unsigned, unsigned>> nid_w_allocated;
     do
     {
